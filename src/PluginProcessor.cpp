@@ -147,7 +147,22 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     {
         auto* channelData = buffer.getWritePointer (channel);
         juce::ignoreUnused (channelData);
-        // ..do something to the data...
+
+        for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+        {
+            // Cubed distortion
+            //channelData[sample] = 1.5f * pow(buffer.getSample(channel, sample), 3);
+
+            // Hyperbolic tangent
+            // Doesn't really do anything?
+            //channelData[sample] = tanh(1.0f * buffer.getSample(channel, sample));
+
+            // Doesn't really do anything?
+            //channelData[sample] = sin(1.0f*buffer.getSample(channel, sample));
+
+            // Random?
+            channelData[sample] = buffer.getSample(channel, sample) * random.nextFloat();
+        }
     }
 }
 

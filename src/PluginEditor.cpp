@@ -8,7 +8,14 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (500, 200);
+
+    mixSlider.setName("mix");
+    mixSlider.setRange(0.0, 100.0);
+    mixSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    mixSlider.setTextValueSuffix(" %");
+    mixSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 50, 20);
+    addAndMakeVisible(&mixSlider);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -23,11 +30,11 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::limegreen);
     g.setFont (15.0f);
-    g.drawFittedText ("contort", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("contort by DMP", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    auto sliderLeft = 120;
+    mixSlider.setBounds(getLocalBounds());
 }

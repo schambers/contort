@@ -14,7 +14,7 @@ cmake_minimum_required(VERSION 3.15)
 # `project()` command. `project()` sets up some helpful variables that describe source/binary
 # directories, and the current project version. This is a standard CMake command.
 
-project(CONTORT VERSION 0.0.1)
+project(Contort VERSION 0.0.1)
 
 # If you've installed JUCE somehow (via a package manager, or directly using the CMake install
 # target), you'll need to tell this project that it depends on the installed copy of JUCE. If you've
@@ -41,7 +41,7 @@ set_directory_properties(PROPERTIES JUCE_COMPANY_WEBSITE "http://www.dkodedbeats
 # the formats specified by the FORMATS arguments. This function accepts many optional arguments.
 # Check the readme at `docs/CMake API.md` in the JUCE repo for the full list.
 
-juce_add_plugin(CONTORT
+juce_add_plugin(Contort
     # VERSION ...                               # Set this if the plugin version is different to the project version
     # ICON_BIG ...                              # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
     # ICON_SMALL ...
@@ -55,8 +55,7 @@ juce_add_plugin(CONTORT
     PLUGIN_MANUFACTURER_CODE JUCE               # A four-character manufacturer id with at least one upper-case character
     PLUGIN_CODE Dem0                            # A unique four-character plugin id with at least one upper-case character
     FORMATS AU VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
-    # COMPANY_NAME
-    PRODUCT_NAME "Contort")        # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "Contort")                     # The name of the final executable, which can differ from the target name
 
 # `juce_generate_juce_header` will create a JuceHeader.h for a given target, which will be generated
 # into your build tree. This should be included with `#include <JuceHeader.h>`. The include path for
@@ -64,14 +63,14 @@ juce_add_plugin(CONTORT
 # include all your JUCE module headers; if you're happy to include module headers directly, you
 # probably don't need to call this.
 
-# juce_generate_juce_header(AudioPluginExample)
+juce_generate_juce_header(Contort)
 
 # `target_sources` adds source files to a target. We pass the target that needs the sources as the
 # first argument, then a visibility parameter for the sources (PRIVATE is normally best practice,
 # although it doesn't really affect executable targets). Finally, we supply a list of source files
 # that will be built into the target. This is a standard CMake command.
 
-target_sources(CONTORT PRIVATE
+target_sources(Contort PRIVATE
         src/PluginEditor.cpp
         src/PluginProcessor.cpp)
 
@@ -82,12 +81,13 @@ target_sources(CONTORT PRIVATE
 # definitions will be visible both to your code, and also the JUCE module code, so for new
 # definitions, pick unique names that are unlikely to collide! This is a standard CMake command.
 
-target_compile_definitions(CONTORT
-    PUBLIC
+target_compile_definitions(Contort PUBLIC
     # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
     JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_plugin` call
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_plugin` call
     JUCE_VST3_CAN_REPLACE_VST2=0)
+
+# target_compile_features(Contort PRIVATE cxx_std_14)
 
 # If your target needs extra binary assets, you can add them here. The first argument is the name of
 # a new static library target that will include all the binary resources. There is an optional
@@ -104,6 +104,6 @@ target_compile_definitions(CONTORT
 # linked automatically. If we'd generated a binary data target above, we would need to link to it
 # here too. This is a standard CMake command.
 
-target_link_libraries(CONTORT PRIVATE
-    # AudioPluginData           # If we'd created a binary data target, we'd link to it here
+target_link_libraries(Contort PRIVATE
+    juce::juce_dsp
     juce::juce_audio_utils)

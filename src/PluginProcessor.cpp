@@ -160,7 +160,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             // Doesn't really do anything?
             //channelData[sample] = sin(1.0f*buffer.getSample(channel, sample));
 
-            // Random?
+            // Random white noise on top of incoming audio
             channelData[sample] = buffer.getSample(channel, sample) * random.nextFloat();
         }
     }

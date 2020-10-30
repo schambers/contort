@@ -146,22 +146,20 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-        juce::ignoreUnused (channelData);
+
+        mThreshold = 0.01;
 
         for (int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
-            // Cubed distortion
-            //channelData[sample] = 1.5f * pow(buffer.getSample(channel, sample), 3);
-
-            // Hyperbolic tangent
-            // Doesn't really do anything?
-            //channelData[sample] = tanh(1.0f * buffer.getSample(channel, sample));
-
-            // Doesn't really do anything?
-            //channelData[sample] = sin(1.0f*buffer.getSample(channel, sample));
-
-            // Random white noise on top of incoming audio
-            channelData[sample] = buffer.getSample(channel, sample) * random.nextFloat();
+            float currentSample = buffer.getSample(channel, sample);
+            // Set max to whichever is smaller, mThreshold or input value
+            if (currentSample >= 0) {
+                channelData[sample] = fmin(currentSample, mThreshold);
+            }
+            else {
+                channelData[sample] = fmax(currentSample, -mThreshold);
+            }
+            channelData[sample] /= mThreshold;
         }
     }
 }
